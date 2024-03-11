@@ -90,11 +90,10 @@ def game_dict():
                 },
             ],
         },
-            
         "away": {
             "team_name": "Washington Wizards",
             "colors": ["Red", "White", "Navy Blue"],
-            "players": [   
+            "players": [
                 {
                     "name": "Bradley Beal",
                     "number": 3,
@@ -179,6 +178,61 @@ def game_dict():
                     "height_inches": 80,
                     "shoe_brand": "Jordan",
                 },
-            ]
-        }
+            ],
+        },
     }
+
+
+teams = game_dict().values()
+
+
+def all_players():
+    return game_dict()["home"]["players"] + game_dict()["away"]["players"]
+
+
+# def find_player_by_name(player_name):
+#     return [player for player in all_players() if player["name"] == player_name][0]
+
+
+def num_points_per_game(player_name):
+    return player_stats(player_name)["points_per_game"]
+
+
+def player_age(player_name):
+    return player_stats(player_name)["age"]
+
+
+def find_team_by_name(team_name):
+    return [team for team in teams if team["team_name"] == team_name][0]
+
+
+def team_colors(team_name):
+    return find_team_by_name(team_name)["colors"]
+
+
+def team_names():
+    return [team["team_name"] for team in teams]
+
+
+def player_numbers(team_name):
+    players = find_team_by_name(team_name)["players"]
+    return [player["number"] for player in players]
+
+
+def player_stats(player_name):
+    return [player for player in all_players() if player["name"] == player_name][0]
+
+
+def average_rebounds_by_shoe_brand():
+    shoe_brand = {}
+    players = all_players()
+    for player in players:
+        brand = player["shoe_brand"]
+        rebounds = player["rebounds_per_game"]
+        if brand in shoe_brand:
+            shoe_brand[brand].append(rebounds)
+        else:
+            shoe_brand[brand] = [rebounds]
+    for brand in shoe_brand:
+        avg = sum(shoe_brand[brand]) / len(shoe_brand[brand])
+        print(f"{brand}:  {avg:.2f}")
